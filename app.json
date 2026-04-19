@@ -28,7 +28,8 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE"
-      ]
+      ],
+      "newArchEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -42,7 +43,6 @@
         }
       ]
     ],
-    "newArchEnabled": true,
     "extra": {
       "eas": {
         "projectId": "44ba8ddf-70a1-498d-a032-d35ce898dbc7"
