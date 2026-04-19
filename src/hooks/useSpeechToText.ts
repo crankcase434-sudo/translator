@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { speechService } from '../services/speechService';
-import { Platform, PermissionsAndroid } from 'react-native';
+import { Platform, PermissionsAndroid, Alert } from 'react-native';
 
 export const useSpeechToText = () => {
   const [isListening, setIsListening] = useState(false);
@@ -37,19 +37,23 @@ export const useSpeechToText = () => {
           setIsListening(false);
         },
         (err) => {
-          setError(err.message || 'Recognition error');
+          const msg = err.message || JSON.stringify(err);
+          setError(msg);
           setIsListening(false);
+          Alert.alert('Speech Error', msg);
         }
       );
     } catch (e: any) {
       setError(e.message);
       setIsListening(false);
+      Alert.alert('Speech Error', e.message);
     }
   }, []);
 
   const stopListening = useCallback(async () => {
     if (recognizerRef.current) {
       await recognizerRef.current.stop();
+      recognizerRef.current = null;
       setIsListening(false);
     }
   }, []);
