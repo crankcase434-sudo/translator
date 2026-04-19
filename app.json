@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.Translator"
+      "bundleIdentifier": "com.crankcase434.translator"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.anonymous.Translator",
+      "package": "com.crankcase434.translator",
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.INTERNET",
@@ -40,12 +40,24 @@
         {
           "fonts": []
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0",
+            "kotlinVersion": "2.1.20"
+          }
+        }
       ]
     ],
     "extra": {
       "eas": {
-        "projectId": "your-project-id"
+        "projectId": "44ba8ddf-70a1-498d-a032-d35ce898dbc7"
       }
-    }
+    },
+    "owner": "crankcase434"
   }
 }

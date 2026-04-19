@@ -1,6 +1,6 @@
-import { MMKV } from 'react-native-mmkv';
+import { createMMKV } from 'react-native-mmkv';
 
-export const storage = new MMKV();
+export const storage = createMMKV();
 
 export interface TranslationHistory {
   id: string;
@@ -48,6 +48,6 @@ export const storageService = {
   },
 
   clearHistory: () => {
-    storage.delete(HISTORY_KEY);
+    storage.remove(HISTORY_KEY);
   },
 };
