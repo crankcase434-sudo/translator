@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { translationService, SUPPORTED_LANGUAGES } from '../services/translationService';
+import { translationService } from '../services/translationService';
 import { storageService, TranslationHistory } from '../services/storageService';
 
 interface AppState {
@@ -9,7 +9,6 @@ interface AppState {
   translatedText: string;
   isTranslating: boolean;
   history: TranslationHistory[];
-  downloadedModels: string[];
   
   setSourceLang: (lang: string) => void;
   setTargetLang: (lang: string) => void;
@@ -30,7 +29,6 @@ export const useAppStore = create<AppState>((set, get) => ({
   translatedText: '',
   isTranslating: false,
   history: [],
-  downloadedModels: [],
 
   setSourceLang: (lang) => set({ sourceLang: lang }),
   setTargetLang: (lang) => set({ targetLang: lang }),
@@ -87,7 +85,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   checkModels: async () => {
-    const models = await translationService.getDownloadedModels();
-    set({ downloadedModels: models });
+    // Simplified stub to prevent errors from leftover calls in UI
+    return;
   },
 }));

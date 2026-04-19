@@ -1,90 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  FlatList,
+  ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
-  Alert,
+  Linking,
 } from 'react-native';
-import { Download, Trash2, CheckCircle } from 'lucide-react-native';
+import { Shield, Info, ExternalLink, Cpu } from 'lucide-react-native';
 import { Colors, Spacing } from '../theme/colors';
-import { useAppStore } from '../store/useAppStore';
-import { translationService, SUPPORTED_LANGUAGES } from '../services/translationService';
 
 export const SettingsScreen = () => {
-  const { downloadedModels, checkModels } = useAppStore();
-  const [loading, setLoading] = useState<string | null>(null);
-
-  useEffect(() => {
-    checkModels();
-  }, []);
-
-  const handleDownload = async (code: string) => {
-    setLoading(code);
-    const success = await translationService.downloadModel(code);
-    if (success) {
-      await checkModels();
-      Alert.alert('Success', `Model for ${code} downloaded.`);
-    } else {
-      Alert.alert('Error', `Failed to download model for ${code}.`);
-    }
-    setLoading(null);
-  };
-
-  const handleDelete = async (code: string) => {
-    setLoading(code);
-    const success = await translationService.deleteModel(code);
-    if (success) {
-      await checkModels();
-    }
-    setLoading(null);
-  };
-
-  const renderItem = ({ item }: { item: typeof SUPPORTED_LANGUAGES[0] }) => {
-    const isDownloaded = downloadedModels.includes(item.code);
-    const isLoading = loading === item.code;
-
-    return (
-      <View style={styles.langItem}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.langName}>{item.name}</Text>
-          <Text style={styles.langCode}>{item.code.toUpperCase()}</Text>
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.header}>Settings</Text>
+      
+      <View style={styles.section}>
+        <View style={styles.infoBox}>
+          <Cpu size={24} color={Colors.accent} style={styles.icon} />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.infoTitle}>AI Engine</Text>
+            <Text style={styles.infoText}>
+              This app uses on-device Google ML Kit and Vosk for 100% offline translation and voice recognition.
+            </Text>
+          </View>
         </View>
 
-        {isLoading ? (
-          <ActivityIndicator color={Colors.accent} />
-        ) : isDownloaded ? (
-          <View style={styles.row}>
-            <CheckCircle size={20} color={Colors.success} style={{ marginRight: Spacing.md }} />
-            <TouchableOpacity onPress={() => handleDelete(item.code)}>
-              <Trash2 size={20} color={Colors.error} />
-            </TouchableOpacity>
+        <View style={styles.infoBox}>
+          <Shield size={24} color={Colors.success} style={styles.icon} />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.infoTitle}>Privacy First</Text>
+            <Text style={styles.infoText}>
+              No data ever leaves your device. Translations and voice recordings are processed locally.
+            </Text>
           </View>
-        ) : (
-          <TouchableOpacity onPress={() => handleDownload(item.code)}>
-            <Download size={20} color={Colors.accent} />
-          </TouchableOpacity>
-        )}
+        </View>
       </View>
-    );
-  };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Offline Models</Text>
-      <Text style={styles.subHeader}>
-        Download language models to use the app without internet.
-      </Text>
+      <Text style={styles.sectionTitle}>Support</Text>
       
-      <FlatList
-        data={SUPPORTED_LANGUAGES}
-        keyExtractor={(item) => item.code}
-        renderItem={renderItem}
-        contentContainerStyle={styles.list}
-      />
-    </View>
+      <TouchableOpacity 
+        style={styles.menuItem}
+        onPress={() => Linking.openURL('https://github.com/crankcase434-sudo/translator')}
+      >
+        <Info size={20} color={Colors.text} style={styles.menuIcon} />
+        <Text style={styles.menuText}>About Project</Text>
+        <ExternalLink size={16} color={Colors.textSecondary} />
+      </TouchableOpacity>
+
+      <View style={styles.footer}>
+        <Text style={styles.version}>Translator v1.0.0</Text>
+        <Text style={styles.copyright}>© 2026 Offline Translator</Text>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -96,36 +64,75 @@ const styles = StyleSheet.create({
   },
   header: {
     color: Colors.text,
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: Spacing.xs,
+    marginBottom: Spacing.xl,
   },
-  subHeader: {
+  section: {
+    marginBottom: Spacing.xl,
+  },
+  sectionTitle: {
     color: Colors.textSecondary,
     fontSize: 14,
-    marginBottom: Spacing.lg,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: Spacing.md,
   },
-  list: {
-    paddingBottom: Spacing.xl,
-  },
-  langItem: {
+  infoBox: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    backgroundColor: Colors.surface,
+    padding: Spacing.lg,
+    borderRadius: 16,
+    marginBottom: Spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
-  langName: {
+  icon: {
+    marginRight: Spacing.md,
+  },
+  infoTitle: {
     color: Colors.text,
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: 'bold',
+    marginBottom: 4,
   },
-  langCode: {
+  infoText: {
     color: Colors.textSecondary,
-    fontSize: 12,
+    fontSize: 14,
+    lineHeight: 20,
   },
-  row: {
+  menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: Colors.surface,
+    padding: Spacing.lg,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  menuIcon: {
+    marginRight: Spacing.md,
+  },
+  menuText: {
+    color: Colors.text,
+    fontSize: 16,
+    fontWeight: '600',
+    flex: 1,
+  },
+  footer: {
+    marginTop: Spacing.xl * 2,
+    alignItems: 'center',
+    paddingBottom: Spacing.xl,
+  },
+  version: {
+    color: Colors.textSecondary,
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  copyright: {
+    color: Colors.textSecondary,
+    fontSize: 12,
+    marginTop: 4,
   },
 });

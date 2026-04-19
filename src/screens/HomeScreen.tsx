@@ -93,9 +93,8 @@ export const HomeScreen = () => {
                   if (isListening) {
                     stopListening();
                   } else {
-                    // Logic to find correct model path based on sourceLang
-                    const modelPath = `/assets/models/vosk-${store.sourceLang}`;
-                    startListening(modelPath);
+                    // Start listening with the bundled English model
+                    startListening('model-en');
                   }
                 }}
               >
