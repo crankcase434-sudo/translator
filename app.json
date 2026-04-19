@@ -28,8 +28,7 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE"
-      ],
-      "newArchEnabled": true
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
